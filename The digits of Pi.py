@@ -1,7 +1,7 @@
 ########################################################
 #                                                      #
 #  The Digits of Pi                                    #
-#  Thomas Hoppe January 2022                            #
+#  Thomas Hoppe January 2022                           #
 #  https://github.com/Thomas20232030/The-Digits-of-Pi  #
 #                                                      #
 ########################################################
@@ -14,8 +14,7 @@ def messen(sta, anz):
     delta = (time.time() - sta)
     m, s = divmod(int(delta), 60)
     h, m = divmod(m, 60)
-    print(f"\nDauer bei {anz} Stellen von Pi in Stunden, Minuten und Sekunden: {h:02}:{m:02}:{s:02}")
-    print(f"Pro einzelner Berechnung sind das {round((delta / anz * 1000), 2)} Millisekunden")
+    print(f"{anz} Stellen in {h:02}:{m:02}:{s:02} / {round((delta / anz * 1000), 2)} Millisekunden pro Stelle")
     return delta
 
 
@@ -67,6 +66,7 @@ def main():
         print("\nBerechnungen zu Pi:")
         print("-------------------")
         print("(1) Die Stellen von Pi")
+        print("(2) Laufzeitverhalten des Algorithmus")
         print("(0) Ende\n")
         auswahl = input("Deine Wahl: ")
 
@@ -76,7 +76,19 @@ def main():
             start = time.time()
             anzahl = 100
             pistellenout(anzahl)
-            messen(start,anzahl)
+            messen(start, anzahl)
+
+        elif auswahl == "2":
+            print("\nLaufzeitverhalten des Algorithmus")
+            print("---------------------------------")
+            ergebnisliste = []
+            for anzahl in range(1000, 21000, 1000):
+                start = time.time()
+                pilistcalc = [str(n) for n in list(pistellen(anzahl))]
+                pilistcalc.insert(1, ',')
+                ergebnisliste.extend([anzahl, messen(start, anzahl)])
+            print()
+            print(ergebnisliste)
 
         elif auswahl == "0":
 
