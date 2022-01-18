@@ -14,7 +14,7 @@ def messen(sta, anz):
     delta = (time.time() - sta)
     m, s = divmod(int(delta), 60)
     h, m = divmod(m, 60)
-    print(f"{anz} Stellen in {h:02}:{m:02}:{s:02} / {round((delta / anz * 1000), 2)} Millisekunden pro Stelle")
+    print(f"{anz} Stellen in {h:02}:{m:02}:{s:02} Stunden / {round((delta / anz * 1000), 2)} Millisekunden pro Stelle")
     return delta
 
 
@@ -60,6 +60,19 @@ def pistellenout(anzahl):
         print(f"\nDie Berechnung und die Liste sind auf {anzahl} Stellen nicht korrekt")
 
 
+def eingabeendwert(text, minimum):
+    while True:
+        try:
+            end = int(input(text))
+            if end < minimum:
+                print("\nBitte einen größeren Wert eingeben...\n")
+                continue
+            break
+        except ValueError:
+            print("\nBitte die Zahl im richtigen Format als ganze Zahl eingeben...\n")
+    return end
+
+
 def main():
     while True:
 
@@ -74,7 +87,7 @@ def main():
             print("\nPi mit beliebigen Nachkommastellen")
             print("----------------------------------")
             start = time.time()
-            anzahl = 100
+            anzahl = eingabeendwert("Auf wie viele Stellen soll Pi berechnet werden? ", 1)
             pistellenout(anzahl)
             messen(start, anzahl)
 
@@ -82,7 +95,8 @@ def main():
             print("\nLaufzeitverhalten des Algorithmus")
             print("---------------------------------")
             ergebnisliste = []
-            for anzahl in range(1000, 21000, 1000):
+            grenze = eingabeendwert("Bis zu welcher Grenze soll gerechnet werden? ", 2000)+1
+            for anzahl in range(1000, grenze, 1000):
                 start = time.time()
                 pilistcalc = [str(n) for n in list(pistellen(anzahl))]
                 pilistcalc.insert(1, ',')
