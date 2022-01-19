@@ -8,13 +8,14 @@
 
 import time
 import textwrap
+import matplotlib.pyplot as plt
 
 
 def messen(sta, anz):
     delta = (time.time() - sta)
     m, s = divmod(int(delta), 60)
     h, m = divmod(m, 60)
-    print(f"{anz} Stellen in {h:02}:{m:02}:{s:02} Stunden / {round((delta / anz * 1000), 2)} Millisekunden pro Stelle")
+    print(f"=>{anz:6.0f} Stellen in {h:02}:{m:02}:{s:02} h  / {(delta / anz * 1000):5.2f} Millisekunde pro Stelle")
     return delta
 
 
@@ -94,15 +95,25 @@ def main():
         elif auswahl == "2":
             print("\nLaufzeitverhalten des Algorithmus")
             print("---------------------------------")
-            ergebnisliste = []
-            grenze = eingabeendwert("Bis zu welcher Grenze soll gerechnet werden? ", 2000)+1
+            ergebnislistex = []
+            ergebnislistey = []
+            grenze = eingabeendwert("Erhöhung in 1000er-Schritten. Bis zu welcher Grenze >=2000? ", 2000) + 1
+            print()
             for anzahl in range(1000, grenze, 1000):
                 start = time.time()
                 pilistcalc = [str(n) for n in list(pistellen(anzahl))]
                 pilistcalc.insert(1, ',')
-                ergebnisliste.extend([anzahl, messen(start, anzahl)])
+                ergebnislistex.append([anzahl])
+                ergebnislistey.append([messen(start, anzahl)])
             print()
-            print(ergebnisliste)
+
+            plt.title("Laufzeit des Algorithmus von 1000 bis " + str(grenze - 1))
+            plt.plot(ergebnislistex, ergebnislistey)
+            plt.grid(True)
+            plt.axis()
+            plt.ylabel("Dauer")
+            plt.xlabel("Durchläufe")
+            plt.show()
 
         elif auswahl == "0":
 
